@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
@@ -22,18 +21,18 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Print(err.Error())
+		app.errorLog.Print(err.Error())
 		http.Error(w, "Internal Server Error", 500)
 		return
 	}
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		log.Print(err.Error())
+		app.errorLog.Print(err.Error())
 		http.Error(w, "Internal Server error", 500)
 	}
 }
 
-func snippetCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.Header().Set("Allow", http.MethodPost) //MethodPost - "POST"
 		// w.WriteHeader(405)
@@ -43,7 +42,8 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte("CreateSnippet"))
 }
-func snippetView(w http.ResponseWriter, r *http.Request) {
+
+func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
 		http.NotFound(w, r)
