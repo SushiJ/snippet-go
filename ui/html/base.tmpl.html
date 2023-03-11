@@ -1,0 +1,16 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{template "title" .}} - Snippet-go</title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/">Snippet-go</a></h1>
+      {{template "nav" .}}
+    </header>
+    <main>{{template "main" .}}</main>
+  </body>
+</html>
+{{end}}
