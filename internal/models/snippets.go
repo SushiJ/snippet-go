@@ -11,7 +11,7 @@ type Snippet struct {
 	Title   string
 	Content string
 	Created time.Time
-	Expired time.Time
+	Expires time.Time
 }
 
 type SnippetModel struct {
@@ -40,7 +40,7 @@ func (m *SnippetModel) Get(id int) (*Snippet, error) {
 	row := m.DB.QueryRow(stmt, id)
 	s := &Snippet{}
 
-	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expired)
+	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord
@@ -65,7 +65,7 @@ func (m *SnippetModel) Latest() ([]*Snippet, error) {
 	for rows.Next() {
 		s := &Snippet{}
 
-		err := rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expired)
+		err := rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
 		if err != nil {
 			return nil, err
 		}
