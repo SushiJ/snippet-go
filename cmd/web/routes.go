@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+
+	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
@@ -14,5 +16,8 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("/snippet/create", app.snippetCreate)
 	mux.HandleFunc("/snippet/view", app.snippetView)
 
-	return app.recoverPanic(app.logRequest(secureHeaders(mux)))
+	// Chaining middlewares
+	middlewares := alice.New(app.recoverPanic, app.logRequest, secureHeaders)
+
+	return middlewares.Then(mux)
 }
