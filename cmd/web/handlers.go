@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-playground/form/v4"
 	"github.com/julienschmidt/httprouter"
 	"github.com/sushij/snippet-go/internal/models"
 	"github.com/sushij/snippet-go/internal/validator"
@@ -33,22 +34,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var form snippetCreateForm
+
+	err := app.decordPostForm(r, &form)
+
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
-	}
-
-	expires, err := strconv.Atoi(r.PostForm.Get("expires"))
-	if err != nil {
-		app.clientError(w, http.StatusBadRequest)
-		return
-	}
-
-	form := &snippetCreateForm{
-		Title:   r.PostForm.Get("title"),
-		Content: r.PostForm.Get("content"),
-		Expires: expires,
 	}
 
 	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be empty")
@@ -104,4 +96,24 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	data.Snippet = snippet
 
 	app.render(w, http.StatusOK, "view.tmpl.html", data)
+}
+
+func (app *application) decordPostForm(r *http.Request, dst any) error {
+
+	err := r.ParseForm()
+	if err != nil {
+		return err
+	}
+	err = app.formDecoder.Decode(dst, r.PostForm)
+
+	if err != nil {
+
+		var invalidDecorderError *form.InvalidDecoderError
+
+		if errors.As(err, &invalidDecorderError) {
+			panic(err)
+		}
+		return err
+	}
+	return nil
 }
