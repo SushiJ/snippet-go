@@ -1,31 +1,31 @@
 {{define "base"}}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>{{template "title" .}} - Snippet-go</title>
-    <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-    <link
-      rel="shortcut icon"
-      href="/static/img/favicon.ico"
-      type="image/x-icon"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700"
-      type="text/css"
-    />
-  </head>
-  <body>
-    <header>
-      <h1><a href="/">Snippet-go</a></h1>
-      {{template "nav" .}}
-    </header>
-    <main>{{template "main" .}}</main>
-    <footer>
-      Powered by <a href="https://golang.org/">Go </a>{{ .CurrentYear }}
-    </footer>
-    <script src="/static/js/main.js" type="text/javascript"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>{{template "title" .}} - Snippet-go</title>
+  <link rel="stylesheet" href="/static/css/main.css" type="text/css" />
+  <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" type="text/css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Snippet-go</a></h1>
+    {{template "nav" .}}
+  </header>
+  <main>
+    {{with .Flash}}
+    <div class="flash">{{.}}</div>
+    {{end}}
+    {{template "main" .}}
+  </main>
+  <footer>
+    Powered by <a href="https://golang.org/">Go </a>{{ .CurrentYear }}
+  </footer>
+  <script src="/static/js/main.js" type="text/javascript"></script>
+</body>
+
 </html>
 {{end}}
