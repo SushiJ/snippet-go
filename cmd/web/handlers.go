@@ -18,6 +18,12 @@ type snippetCreateForm struct {
 	Expires             int    `form:"expires"`
 	validator.Validator `form:"-"`
 }
+type userSignUp struct {
+	Name                string `form:"name"`
+	Email               string `form:"email"`
+	Password            int    `form:"password"`
+	validator.Validator `form:"-"`
+}
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
@@ -118,4 +124,26 @@ func (app *application) decordPostForm(r *http.Request, dst any) error {
 		return err
 	}
 	return nil
+}
+
+func (app *application) userSignUp(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	data.Form = userSignUp{}
+	app.render(w, http.StatusOK, "signup.tmpl.html", data)
+}
+
+func (app *application) userSignUpPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "create new user")
+}
+
+func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "HTML form for user login")
+}
+
+func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Auth and login")
+}
+
+func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Logout")
 }

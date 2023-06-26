@@ -87,11 +87,13 @@ header a {
 
 nav {
     border-bottom: 1px solid #E4E5E7;
-    padding-top: 17px;
-    padding-bottom: 15px;
     background: #F7F9FA;
     height: 60px;
     color: #6A6C6F;
+    text-align: left;
+    padding: 1rem .75rem;
+    margin-top: .5rem;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 nav a {
